@@ -115,6 +115,13 @@ In this step, you'll set up Koin with a modular structure:
   }
   ```
 
+  ```kotlin
+  // shared/src/commonMain/kotlin/di/modules/NetworkModule.kt
+  val networkModule = module {
+      // Define your network-related dependencies here
+  }
+  ```
+
 1. The special case is the platform module, which will be extended by each platform to include platform-specific dependencies.
   ```kotlin
   // shared/src/commonMain/kotlin/di/modules/PlatformModule.kt
@@ -142,7 +149,7 @@ In this step, you'll set up Koin with a modular structure:
   val sharedModule = module {
       // Define shared dependencies here
       // special case for platform-specific dependencies calling as a function.
-      includes(dataModule, domainModule, presentationModule, platformModule())
+      includes(dataModule, domainModule, presentationModule, networkModule, platformModule())
   }
   ```
 
