@@ -1,33 +1,33 @@
-## Step 2: Setup Ktor and Coroutines
+## Paso 2: Configurar Ktor y Coroutines
 
-Now that you have Koin set up for dependency injection, it's time to connect your app to the real world! You'll fetch SpaceX launch data from their public API using Ktor, a modern HTTP client built for Kotlin Multiplatform, and handle asynchronous operations with Kotlin Coroutines.
+Ahora que tenés Koin configurado para inyección de dependencias, ¡es hora de conectar tu app al mundo real! Vas a obtener datos de lanzamientos de SpaceX desde su API pública usando Ktor, un cliente HTTP moderno construido para Kotlin Multiplatform, y manejar operaciones asíncronas con Kotlin Coroutines.
 
-### 📖 Theory: Networking and Asynchronous Programming in KMP
+### 📖 Teoría: Networking y Programación Asíncrona en KMP
 
-**Ktor** is a framework for building asynchronous clients and servers in Kotlin. The Ktor Client is perfect for KMP projects because:
-- **Multiplatform**: Works on Android, iOS, and other platforms with platform-specific engines
-- **Lightweight**: Only includes what you need through plugin-based architecture
-- **Type-safe**: Leverages Kotlin's type system for safer HTTP requests
-- **Coroutine-native**: Built from the ground up to work seamlessly with coroutines
+**Ktor** es un framework para construir clientes y servidores asíncronos en Kotlin. El Cliente Ktor es perfecto para proyectos KMP porque:
+- **Multiplataforma**: Funciona en Android, iOS y otras plataformas con engines específicos de cada plataforma
+- **Liviano**: Solo incluye lo que necesitás a través de una arquitectura basada en plugins
+- **Type-safe**: Aprovecha el sistema de tipos de Kotlin para peticiones HTTP más seguras
+- **Nativo de coroutines**: Construido desde cero para funcionar perfectamente con coroutines
 
-**Kotlin Coroutines** provide a way to write asynchronous code that looks and behaves like synchronous code:
-- **Structured Concurrency**: Ensures all async operations complete or cancel properly
-- **Flow**: Reactive streams for handling multiple values over time
-- **Dispatchers**: Control which thread your code runs on (IO, Main, Default)
+**Kotlin Coroutines** proporciona una forma de escribir código asíncrono que se ve y comporta como código síncrono:
+- **Structured Concurrency**: Asegura que todas las operaciones asíncronas se completen o cancelen correctamente
+- **Flow**: Streams reactivos para manejar múltiples valores con el tiempo
+- **Dispatchers**: Controlan en qué thread se ejecuta tu código (IO, Main, Default)
 
 > [!IMPORTANT]
-> Ktor uses different HTTP engines for different platforms: OkHttp for Android and Darwin (NSURLSession) for iOS. This is why you'll see platform-specific dependencies in your configuration.
+> Ktor usa diferentes engines HTTP para diferentes plataformas: OkHttp para Android y Darwin (NSURLSession) para iOS. Por eso verás dependencias específicas de plataforma en tu configuración.
 
-In this step, you'll:
-- Configure Ktor with JSON serialization for the SpaceX API
-- Create a data source that fetches rocket launch data
-- Use Flow to emit data asynchronously
-- Write comprehensive tests using Ktor's MockEngine
+En este paso, vas a:
+- Configurar Ktor con serialización JSON para la API de SpaceX
+- Crear una fuente de datos que obtiene información de lanzamientos de cohetes
+- Usar Flow para emitir datos de forma asíncrona
+- Escribir pruebas completas usando el MockEngine de Ktor
 
 
-### ⌨️ Activity: Integrate Ktor and Coroutines
+### ⌨️ Actividad: Integrar Ktor y Coroutines
 
-1. Add Ktor and Coroutines dependencies to your project.
+1. Agregá las dependencias de Ktor y Coroutines a tu proyecto.
 
   ```toml
   # gradle/libs.versions.toml
@@ -56,7 +56,7 @@ In this step, you'll:
   ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json" }
   ```
 
-1. Add Ktor and Coroutines dependencies to your project modules.
+1. Agregá las dependencias de Ktor y Coroutines a los módulos de tu proyecto.
 
   ```kotlin
   // shared/build.gradle.kts
@@ -106,7 +106,7 @@ In this step, you'll:
   }
   ```
 
-1. Add Ktor client dependency to your NetworkModule.
+1. Agregá la dependencia del cliente Ktor a tu NetworkModule.
 
   ```kotlin
   // shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/NetworkModule.kt
@@ -126,7 +126,7 @@ In this step, you'll:
   }
   ```
 
-1. Create a new file to use Ktor client in your data layer.
+1. Creá un nuevo archivo para usar el cliente Ktor en tu capa de datos.
 
   ```kotlin
   // shared/src/commonMain/kotlin/compose/project/demo/composedemo/domain/entity/Entity.kt
@@ -175,7 +175,7 @@ In this step, you'll:
   }
   ```
 
-1. Add RemoteRocketLaunchesDataSource to your DataModule.
+1. Agregá RemoteRocketLaunchesDataSource a tu DataModule.
 
   ```kotlin
   // shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/DataModule.kt
@@ -184,7 +184,7 @@ In this step, you'll:
   }
   ```
 
-1. Add a test for RemoteRocketLaunchesDataSource using Ktor MockEngine.
+1. Agregá un test para RemoteRocketLaunchesDataSource usando Ktor MockEngine.
 
   ```kotlin
   // shared/src/commonTest/kotlin/compose/project/demo/composedemo/data/remote/RemoteRocketLaunchesDataSourceTest.kt
@@ -394,17 +394,17 @@ In this step, you'll:
   }
   ```
 
-1. Run your tests to ensure everything is working correctly.
+1. Ejecutá tus pruebas para asegurar que todo funciona correctamente.
 
 
 <details>
-<summary>Having trouble? 🤷</summary><br/>
+<summary>¿Tenés problemas? 🤷</summary><br/>
 
-- **Serialization errors**: Make sure you've added the `@Serializable` annotation to your data classes and imported `kotlinx.serialization.SerialName` for the `@SerialName` annotations. The Kotlin serialization plugin should be applied in your build.gradle.kts.
-- **Network connection issues in tests**: The tests use MockEngine, which simulates network responses without making real HTTP calls. If tests are failing, verify that your JSON mock responses match the expected data structure exactly.
-- **Flow collection errors**: Remember that Flows are cold streams - they don't execute until collected. Use `.first()` in tests to collect the first emitted value. For production code, collect in a coroutine scope.
-- **Dispatcher issues**: In tests, use `Dispatchers.Unconfined` instead of `Dispatchers.IO` to execute coroutines immediately on the current thread. In production code, always use the appropriate dispatcher (IO for network calls).
-- **Missing NetworkModule**: Don't forget to include `networkModule` in your `sharedModule` in SharedModule.kt. Without it, Koin won't be able to provide the HttpClient dependency.
-- **Platform-specific engine not found**: Ensure you've added the correct platform-specific Ktor client dependencies: `ktor-client-okhttp` for Android and `ktor-client-darwin` for iOS in their respective source sets.
+- **Errores de serialización**: Asegurate de haber agregado la anotación `@Serializable` a tus clases de datos e importado `kotlinx.serialization.SerialName` para las anotaciones `@SerialName`. El plugin de serialización de Kotlin debe estar aplicado en tu build.gradle.kts.
+- **Problemas de conexión de red en tests**: Los tests usan MockEngine, que simula respuestas de red sin hacer llamadas HTTP reales. Si los tests fallan, verificá que tus respuestas JSON mock coincidan exactamente con la estructura de datos esperada.
+- **Errores de colección de Flow**: Recordá que los Flows son streams fríos - no se ejecutan hasta que son colectados. Usá `.first()` en tests para colectar el primer valor emitido. Para código de producción, colectá en un coroutine scope.
+- **Problemas con Dispatchers**: En tests, usá `Dispatchers.Unconfined` en lugar de `Dispatchers.IO` para ejecutar coroutines inmediatamente en el thread actual. En código de producción, siempre usá el dispatcher apropiado (IO para llamadas de red).
+- **NetworkModule faltante**: No te olvidés de incluir `networkModule` en tu `sharedModule` en SharedModule.kt. Sin él, Koin no podrá proveer la dependencia HttpClient.
+- **Engine específico de plataforma no encontrado**: Asegurate de haber agregado las dependencias correctas del cliente Ktor específicas de plataforma: `ktor-client-okhttp` para Android y `ktor-client-darwin` para iOS en sus respectivos source sets.
 
 </details>

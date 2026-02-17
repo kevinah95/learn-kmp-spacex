@@ -1,33 +1,33 @@
-## Step 3: Setup SQLDelight
+## Paso 3: Configurar SQLDelight
 
-Fetching data from the network is great, but what happens when users lose internet connection or want to view previously loaded launches? You'll need local data persistence! SQLDelight provides a type-safe SQL interface that works seamlessly across all platforms in your KMP project.
+Obtener datos de la red es genial, pero ¿qué pasa cuando los usuarios pierden la conexión a internet o quieren ver lanzamientos cargados previamente? ¡Necesitás persistencia de datos local! SQLDelight proporciona una interfaz SQL type-safe que funciona perfectamente en todas las plataformas de tu proyecto KMP.
 
-### 📖 Theory: Local Data Persistence with SQLDelight
+### 📖 Teoría: Persistencia de Datos Local con SQLDelight
 
-**SQLDelight** is a multiplatform database library that generates type-safe Kotlin APIs from your SQL statements. It's an excellent choice for KMP projects because:
-- **Write SQL once, use everywhere**: The same database schema works on Android, iOS, and other platforms
-- **Type-safe queries**: Compile-time verification of SQL queries prevents runtime errors
-- **Platform-specific drivers**: Uses the best native database driver for each platform (SQLite on Android, SQLite.swift on iOS)
-- **No ORM overhead**: Direct SQL means better performance and control
+**SQLDelight** es una biblioteca de bases de datos multiplataforma que genera APIs de Kotlin type-safe desde tus sentencias SQL. Es una excelente opción para proyectos KMP porque:
+- **Escribí SQL una vez, usálo en todas partes**: El mismo esquema de base de datos funciona en Android, iOS y otras plataformas
+- **Consultas type-safe**: La verificación de consultas SQL en tiempo de compilación previene errores en tiempo de ejecución
+- **Drivers específicos de plataforma**: Usa el mejor driver de base de datos nativo para cada plataforma (SQLite en Android, SQLite.swift en iOS)
+- **Sin overhead de ORM**: SQL directo significa mejor rendimiento y control
 
 > [!NOTE]
-> SQLDelight generates Kotlin code from `.sq` files containing SQL statements. When you build your project, it creates type-safe functions that match your queries, ensuring you can't accidentally use wrong types or column names.
+> SQLDelight genera código Kotlin desde archivos `.sq` que contienen sentencias SQL. Cuando construyés tu proyecto, crea funciones type-safe que coinciden con tus consultas, asegurando que no podés usar accidentalmente tipos o nombres de columnas incorrectos.
 
-**Key Concepts:**
-- **Schema files (.sq)**: Define your database tables and queries using standard SQL
-- **Driver Factory**: Platform-specific implementations that provide the appropriate SQLite driver
-- **Generated code**: SQLDelight automatically creates Kotlin APIs from your SQL
-- **Transactions**: Ensure data consistency when performing multiple operations
+**Conceptos Clave:**
+- **Archivos de esquema (.sq)**: Definí tus tablas y consultas de base de datos usando SQL estándar
+- **Driver Factory**: Implementaciones específicas de plataforma que proveen el driver SQLite apropiado
+- **Código generado**: SQLDelight crea automáticamente APIs de Kotlin desde tu SQL
+- **Transacciones**: Aseguran consistencia de datos al realizar múltiples operaciones
 
-In this step, you'll:
-- Set up SQLDelight with platform-specific drivers
-- Create a database schema for caching rocket launches
-- Implement a local data source for offline access
-- Integrate the local database with Koin for dependency injection
+En este paso, vas a:
+- Configurar SQLDelight con drivers específicos de plataforma
+- Crear un esquema de base de datos para cachear lanzamientos de cohetes
+- Implementar una fuente de datos local para acceso offline
+- Integrar la base de datos local con Koin para inyección de dependencias
 
-### ⌨️ Activity: Implement Local Database with SQLDelight
+### ⌨️ Actividad: Implementar Base de Datos Local con SQLDelight
 
-1. Add SQLDelight dependencies to your project.
+1. Agregá las dependencias de SQLDelight a tu proyecto.
 
   ```kotlin
   // gradle/libs.versions.toml
@@ -44,7 +44,7 @@ In this step, you'll:
   sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
   ```
 
-1. Apply the SQLDelight plugin and configure it in your project modules.
+1. Aplicá el plugin de SQLDelight y configurálo en los módulos de tu proyecto.
 
   ```kotlin
   // shared/build.gradle.kts
@@ -104,9 +104,9 @@ In this step, you'll:
   FROM Launch;
   ```
 
-  Build your project and SQLDelight will generate the necessary database code based on your schema.
+  Construí tu proyecto y SQLDelight generará el código de base de datos necesario basado en tu esquema.
 
-1. Create a Database Driver Factory to provide platform-specific database drivers.
+1. Creá una Database Driver Factory para proveer drivers de base de datos específicos de plataforma.
 
   ```kotlin
   // shared/src/commonMain/kotlin/compose/project/demo/composedemo/data/local/DriverFactory.kt
@@ -133,7 +133,7 @@ In this step, you'll:
   }
   ```
 
-1. Update your PlatformModule to include the DriverFactory and its dependencies.
+1. Actualizá tu PlatformModule para incluir el DriverFactory y sus dependencias.
 
   ```diff
   // shared/src/androidMain/kotlin/compose/project/demo/composedemo/di/modules/PlatformModule.android.kt
@@ -149,7 +149,7 @@ In this step, you'll:
   }
   ```
 
-1. Create LocalRocketLaunchesDataSource to interact with the database.
+1. Creá LocalRocketLaunchesDataSource para interactuar con la base de datos.
 
   ```kotlin
   // shared/src/commonMain/kotlin/compose/project/demo/composedemo/data/local/ILocalRocketLaunchesDataSource.kt
@@ -227,15 +227,15 @@ In this step, you'll:
   ```
 
 <details>
-<summary>Having trouble? 🤷</summary><br/>
+<summary>¿Tenés problemas? 🤷</summary><br/>
 
-- **Build fails after adding SQLDelight plugin**: Make sure you've synced your Gradle files after adding the plugin. SQLDelight generates code during the build process, so a clean build might help: `./gradlew clean build`.
-- **Generated code not found**: SQLDelight generates code based on your `.sq` files. Ensure the `.sq` file is in the correct location: `shared/src/commonMain/sqldelight/{packagePath}/AppDatabase.sq`. The package path should match your configured `packageName`.
-- **SQL syntax errors**: SQLDelight validates SQL at compile time. If you see SQL errors, check that your syntax matches SQLite standards. The `import kotlin.Boolean;` statement is necessary to map SQLite's INTEGER to Kotlin's Boolean type.
-- **Platform driver not found**: Verify that you've added the correct platform-specific driver dependencies in the appropriate source sets: `android-driver` for `androidMain` and `native-driver` for `iosMain`.
-- **Context parameter missing on Android**: The Android DriverFactory requires a Context parameter. Make sure your Android app is providing the application context to Koin. This is typically done in your Application class or MainActivity.
-- **Database queries return null or wrong data**: Check your mapper function (`mapLaunchSelecting`) - the parameter order must match the column order in your SELECT query. Type mismatches here can cause subtle bugs.
-- **Transaction errors**: When using `dbQuery.transaction {}`, ensure all operations inside complete successfully. If one fails, the entire transaction rolls back. This is normal behavior to maintain data consistency.
-- **linkSqlite configuration**: The `linkSqlite = true` setting in the SQLDelight configuration is crucial for iOS - it links the SQLite library into your iOS framework. Without it, you'll get runtime errors on iOS.
+- **Falla la construcción después de agregar el plugin SQLDelight**: Asegurate de haber sincronizado tus archivos Gradle después de agregar el plugin. SQLDelight genera código durante el proceso de construcción, así que una construcción limpia podría ayudar: `./gradlew clean build`.
+- **Código generado no encontrado**: SQLDelight genera código basado en tus archivos `.sq`. Asegurate de que el archivo `.sq` esté en la ubicación correcta: `shared/src/commonMain/sqldelight/{packagePath}/AppDatabase.sq`. El package path debe coincidir con tu `packageName` configurado.
+- **Errores de sintaxis SQL**: SQLDelight valida SQL en tiempo de compilación. Si ves errores SQL, verificá que tu sintaxis coincida con los estándares de SQLite. La sentencia `import kotlin.Boolean;` es necesaria para mapear el INTEGER de SQLite al tipo Boolean de Kotlin.
+- **Driver de plataforma no encontrado**: Verificá que hayas agregado las dependencias correctas de driver específicas de plataforma en los source sets apropiados: `android-driver` para `androidMain` y `native-driver` para `iosMain`.
+- **Parámetro Context faltante en Android**: El DriverFactory de Android requiere un parámetro Context. Asegurate de que tu app Android esté proveyendo el contexto de aplicación a Koin. Esto típicamente se hace en tu clase Application o MainActivity.
+- **Las consultas de base de datos retornan null o datos incorrectos**: Verificá tu función mapper (`mapLaunchSelecting`) - el orden de los parámetros debe coincidir con el orden de las columnas en tu consulta SELECT. Desajustes de tipos aquí pueden causar bugs sutiles.
+- **Errores de transacción**: Cuando uses `dbQuery.transaction {}`, asegurate de que todas las operaciones dentro se completen exitosamente. Si una falla, toda la transacción se revierte. Esto es comportamiento normal para mantener la consistencia de datos.
+- **Configuración linkSqlite**: La configuración `linkSqlite = true` en la configuración de SQLDelight es crucial para iOS - enlaza la biblioteca SQLite en tu framework iOS. Sin ella, obtendrás errores en tiempo de ejecución en iOS.
 
 </details>

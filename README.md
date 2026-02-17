@@ -1,49 +1,52 @@
-# (replace-me: Exercise title)
+# Aprende Kotlin Multiplatform con SpaceX
 
-_(replace-me: One-line description of the exercise)_
+_Construye una aplicación multiplataforma para rastrear lanzamientos de SpaceX usando Kotlin Multiplatform_
 
-## Welcome
+## Bienvenido
 
-- **Who is this for**: (replace-me: Target audience description)
-- **What you'll learn**: (replace-me: Learning objectives)
-- **What you'll build**: (replace-me: Description of what the learner will create)
-- **Prerequisites**:
-  - (replace-me: Prerequisite skill/exercise)
-  - (replace-me: Other prerequisites)
+- **Para quién es este curso**: Desarrolladores móviles que quieren aprender a compartir código entre Android e iOS usando Kotlin Multiplatform (KMP)
+- **Qué aprenderás**: Inyección de dependencias con Koin, networking con Ktor, persistencia local con SQLDelight, y arquitectura limpia en proyectos KMP
+- **Qué construirás**: Una aplicación multiplataforma que muestra información de lanzamientos de cohetes SpaceX, con caché offline y sincronización de datos
+- **Requisitos previos**:
+  - Conocimientos básicos de Kotlin
+  - Familiaridad con Android Studio
+  - Conceptos básicos de programación asíncrona (Coroutines)
+  - Una cuenta de GitHub
 
-- **How long**: This exercise takes less than (replace-me: estimated time) to complete.
+- **Duración**: Este ejercicio toma aproximadamente 2-3 horas para completarse.
 
-In this exercise, you will:
+En este ejercicio, aprenderás a:
 
-1. (replace-me: Learning objective step #1)
-1. (replace-me: Learning objective step #2)
-1. (replace-me: Learning objective step #N)
+1. Configurar Koin para inyección de dependencias en proyectos multiplataforma
+1. Implementar clientes HTTP con Ktor y manejar operaciones asíncronas con Coroutines
+1. Crear bases de datos locales con SQLDelight para persistencia de datos offline
+1. Construir una arquitectura limpia con el patrón Repository y ViewModels
+1. Trabajar con expect/actual para implementaciones específicas de cada plataforma
 
 
-### How to start this exercise
+### Cómo iniciar este ejercicio
 
-Simply copy the exercise to your account, then give your favorite Octocat (Mona) **about 20 seconds** to prepare the first lesson, then **refresh the page**.
+Simplemente copia el ejercicio a tu cuenta, luego dale a tu Octocat favorito (Mona) **aproximadamente 20 segundos** para preparar la primera lección, después **actualiza la página**.
 
-<!--  (replace-me: Make sure to edit the URL with proper template_owner, template_name, repo name and description)  -->
-[![](https://img.shields.io/badge/Copy%20Exercise-%E2%86%92-1f883d?style=for-the-badge&logo=github&labelColor=197935)](https://github.com/new?template_owner=skills&template_name=exercise-template&owner=%40me&name=skills-<replace-me>&description=Exercise:+Replace+me&visibility=public)
+[![](https://img.shields.io/badge/Copiar%20Ejercicio-%E2%86%92-1f883d?style=for-the-badge&logo=github&labelColor=197935)](https://github.com/new?template_owner=kevinah95&template_name=learn-kmp-spacex&owner=%40me&name=learn-kmp-spacex&description=Aprende+Kotlin+Multiplatform+con+SpaceX&visibility=public)
 
 <details>
-<summary>Having trouble? 🤷</summary><br/>
+<summary>¿Tienes problemas? 🤷</summary><br/>
 
-When copying the exercise, we recommend the following settings:
+Al copiar el ejercicio, recomendamos la siguiente configuración:
 
-- For owner, choose your personal account or an organization to host the repository.
+- Como propietario, elige tu cuenta personal o una organización para alojar el repositorio.
 
-- We recommend creating a public repository, since private repositories will use Actions minutes.
+- Recomendamos crear un repositorio público, ya que los repositorios privados usan minutos de Actions.
 
-If the exercise isn't ready in 20 seconds, please check the [Actions](../../actions) tab.
+Si el ejercicio no está listo en 20 segundos, por favor revisa la pestaña [Actions](../../actions).
 
-- Check to see if a job is running. Sometimes it simply takes a bit longer.
+- Verifica si hay un trabajo ejecutándose. A veces simplemente toma un poco más de tiempo.
 
-- If the page shows a failed job, please submit an issue. Nice, you found a bug! 🐛
+- Si la página muestra un trabajo fallido, por favor envía un issue. ¡Bien, encontraste un bug! 🐛
 
 </details>
 
 ---
 
-&copy; 2026 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
+&copy; 2026 GitHub &bull; [Código de Conducta](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [Licencia MIT](https://gh.io/mit)

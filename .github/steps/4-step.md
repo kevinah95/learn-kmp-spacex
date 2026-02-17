@@ -1,42 +1,42 @@
 
-## Step 4: Add Repository and presentation layer
+## Paso 4: Agregar Repository y capa de presentación
 
-You now have both network and local data sources, but your app needs a clean way to coordinate between them. The Repository pattern provides a single source of truth for your data, while the presentation layer (ViewModel) manages UI state and business logic. Let's bring it all together!
+Ahora tenés fuentes de datos tanto de red como locales, pero tu app necesita una forma limpia de coordinar entre ellas. El patrón Repository proporciona una única fuente de verdad para tus datos, mientras que la capa de presentación (ViewModel) gestiona el estado de UI y la lógica de negocio. ¡Vamos a juntarlo todo!
 
-### 📖 Theory: Clean Architecture and the Repository Pattern
+### 📖 Teoría: Arquitectura Limpia y el Patrón Repository
 
-**Clean Architecture** separates concerns into distinct layers, making your code more maintainable and testable. In KMP, this typically includes:
-- **Data Layer**: Repositories, data sources (remote/local), and DTOs
-- **Domain Layer**: Business logic and use cases (optional for simpler apps)
-- **Presentation Layer**: ViewModels and UI state management
+**Arquitectura Limpia** separa responsabilidades en capas distintas, haciendo tu código más mantenible y testeable. En KMP, esto típicamente incluye:
+- **Capa de Datos**: Repositorios, fuentes de datos (remota/local), y DTOs
+- **Capa de Dominio**: Lógica de negocio y casos de uso (opcional para apps más simples)
+- **Capa de Presentación**: ViewModels y gestión de estado de UI
 
-**The Repository Pattern** acts as a mediator between different data sources:
-- Provides a **single source of truth** for the app's data
-- **Abstracts data origin** - UI doesn't need to know if data comes from network or cache
-- **Handles caching strategy** - when to fetch fresh data vs. use cached data
-- **Manages error handling** - gracefully falls back to cached data when network fails
+**El Patrón Repository** actúa como un mediador entre diferentes fuentes de datos:
+- Proporciona una **única fuente de verdad** para los datos de la app
+- **Abstrae el origen de datos** - la UI no necesita saber si los datos vienen de la red o el caché
+- **Maneja la estrategia de caché** - cuándo obtener datos frescos vs. usar datos en caché
+- **Gestiona el manejo de errores** - retrocede elegantemente a datos en caché cuando falla la red
 
 > [!TIP]
-> The Repository in this implementation uses a "network-first with cache fallback" strategy. It tries to fetch fresh data, caches it locally, but falls back to cached data if the network request fails. This provides the best user experience!
+> El Repository en esta implementación usa una estrategia de "red primero con retroceso a caché". Intenta obtener datos frescos, los cachea localmente, pero retrocede a datos en caché si la petición de red falla. ¡Esto proporciona la mejor experiencia de usuario!
 
-**ViewModel and State Management:**
-- **ViewModel**: Survives configuration changes and manages UI-related data
-- **StateFlow**: Provides a reactive stream of UI state updates to the Compose UI
-- **viewModelScope**: Automatically cancels coroutines when ViewModel is cleared
-- **UiState**: A single data class representing the entire screen state
+**ViewModel y Gestión de Estado:**
+- **ViewModel**: Sobrevive a cambios de configuración y gestiona datos relacionados con la UI
+- **StateFlow**: Proporciona un stream reactivo de actualizaciones de estado de UI a la UI de Compose
+- **viewModelScope**: Cancela automáticamente coroutines cuando el ViewModel se limpia
+- **UiState**: Una sola data class que representa todo el estado de la pantalla
 
 > [!IMPORTANT]
-> Flow operators like `flowOn()` and `catch()` are crucial for proper threading and error handling. `flowOn()` affects upstream operations (before it), while `catch()` handles exceptions and can emit fallback values.
+> Operadores de Flow como `flowOn()` y `catch()` son cruciales para el threading y manejo de errores apropiado. `flowOn()` afecta operaciones upstream (antes de él), mientras que `catch()` maneja excepciones y puede emitir valores de retroceso.
 
-In this step, you'll:
-- Implement the Repository pattern to coordinate data sources
-- Create a ViewModel to manage UI state with StateFlow
-- Use Flow operators for threading and error handling
-- Write tests to verify the caching and fallback behavior
+En este paso, vas a:
+- Implementar el patrón Repository para coordinar fuentes de datos
+- Crear un ViewModel para gestionar estado de UI con StateFlow
+- Usar operadores de Flow para threading y manejo de errores
+- Escribir tests para verificar el comportamiento de caché y retroceso
 
-### ⌨️ Activity: Build Repository and ViewModel
+### ⌨️ Actividad: Construir Repository y ViewModel
 
-1. Create a Repository interface in the shared module to abstract data operations.
+1. Creá una interfaz Repository en el módulo shared para abstraer operaciones de datos.
 
    ```kotlin
    // shared/src/commonMain/kotlin/compose/project/demo/composedemo/data/repository/IRocketLaunchesRepository.kt
@@ -45,7 +45,7 @@ In this step, you'll:
    }
    ```
 
-1. Implement the Repository interface using both local and remote data sources.
+1. Implementá la interfaz Repository usando fuentes de datos locales y remotas.
 
    ```kotlin
    // shared/src/commonMain/kotlin/compose/project/demo/composedemo/data/repository/RocketLaunchesRepository.kt
@@ -74,7 +74,7 @@ In this step, you'll:
   }
    ``` 
 
-1. Update your Data Module to include the Repository and its dependencies.
+1. Actualizá tu Data Module para incluir el Repository y sus dependencias.
 
    ```diff
    // shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/DataModule.kt
@@ -84,7 +84,7 @@ In this step, you'll:
    }
    ```
 
-1. Create a UiState class to represent the state of your UI.
+1. Creá una clase UiState para representar el estado de tu UI.
 
    ```kotlin
    // shared/src/commonMain/kotlin/compose/project/demo/composedemo/presentation/rocketLaunch/RocketLaunchUiState.kt
@@ -94,7 +94,7 @@ In this step, you'll:
   )
    ```
 
-1. Create a ViewModel to manage the UI state and interact with the Repository.
+1. Creá un ViewModel para gestionar el estado de UI e interactuar con el Repository.
 
    ```kotlin
    // shared/src/commonMain/kotlin/compose/project/demo/composedemo/presentation/rocketLaunch/RocketLaunchViewModel.kt
@@ -122,7 +122,7 @@ In this step, you'll:
   }
   ```
 
-1. Update your Presentation Module to include the ViewModel and its dependencies.
+1. Actualizá tu Presentation Module para incluir el ViewModel y sus dependencias.
 
   ```diff
   // shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/PresentationModule.kt
@@ -132,7 +132,7 @@ In this step, you'll:
   }
   ```
 
-1. Create a test for the Repository to verify its behavior.
+1. Creá un test para el Repository para verificar su comportamiento.
 
   ```kotlin
   // shared/src/commonTest/kotlin/compose/project/demo/composedemo/data/repository/RocketLaunchesRepositoryTest.kt
@@ -208,19 +208,19 @@ In this step, you'll:
   }
   ```
 
-1. Run your tests to ensure everything is working as expected.
+1. Ejecutá tus tests para asegurar que todo funciona como se espera.
 
 <details>
-<summary>Having trouble? 🤷</summary><br/>
+<summary>¿Tenés problemas? 🤷</summary><br/>
 
-- **Flow collection never completes**: Remember that `Flow.collect()` is a suspending function that runs continuously until the flow completes or is cancelled. If your repository flow never emits a completion, consider using `first()` to get just the first emission, or ensure the flow has proper lifecycle management.
-- **State not updating in UI**: Make sure you're collecting the `uiState` StateFlow in your Composable using `collectAsState()`. Also verify that you're emitting new state objects (using `copy()`) rather than mutating existing ones - StateFlow only emits when the value reference changes.
-- **ViewModel test failures**: When testing ViewModels with coroutines, use `runTest` from kotlinx-coroutines-test and set `Dispatchers.Main` to a test dispatcher. Also, remember that `viewModelScope` launches coroutines that may not complete immediately in tests.
-- **Repository returns stale data**: Check the order of Flow operators. `flowOn()` affects operators above it (upstream), not below. Your data transformation should happen before `flowOn()` if you want it to run on that dispatcher.
-- **catch block not executing**: The `catch()` operator only catches exceptions from upstream (before it). If an exception happens during collection (downstream), it won't be caught. Also, `catch()` must emit a value or re-throw to continue the flow.
-- **Multiple LoadLaunches calls**: If `loadLaunches()` is called multiple times rapidly, you might want to cancel previous collections. Consider using `Flow.collect()` in a single coroutine or using `shareIn()`/`stateIn()` to share the flow.
-- **Mock dependencies not working**: Make sure you've added a mocking library like MockK to your test dependencies. For KMP, you might need to add it to `commonTest` source set: `implementation("io.mockk:mockk:1.13.8")` or use manual mocks.
-- **Dispatcher.Default vs Dispatcher.IO**: Use `Dispatchers.Default` for CPU-intensive work and `Dispatchers.IO` for I/O operations. In the repository, we use Default for the cache operation since it's a quick local write, while the network call in the data source uses IO.
-- **copy() function not available on data class**: Ensure your UiState class is declared as a `data class`, not a regular `class`. The `copy()` function is automatically generated for data classes.
+- **La colección de Flow nunca se completa**: Recordá que `Flow.collect()` es una función suspendida que se ejecuta continuamente hasta que el flow se completa o se cancela. Si tu flow del repository nunca emite una finalización, considerá usar `first()` para obtener solo la primera emisión, o asegurate de que el flow tenga una gestión de ciclo de vida apropiada.
+- **El estado no se actualiza en la UI**: Asegurate de estar colectando el StateFlow `uiState` en tu Composable usando `collectAsState()`. También verificá que estés emitiendo nuevos objetos de estado (usando `copy()`) en lugar de mutar los existentes - StateFlow solo emite cuando la referencia del valor cambia.
+- **Fallas en tests del ViewModel**: Cuando pruebes ViewModels con coroutines, usá `runTest` de kotlinx-coroutines-test y establecé `Dispatchers.Main` a un dispatcher de test. Además, recordá que `viewModelScope` lanza coroutines que pueden no completarse inmediatamente en tests.
+- **El Repository devuelve datos obsoletos**: Verificá el orden de los operadores de Flow. `flowOn()` afecta operadores arriba de él (upstream), no abajo. Tu transformación de datos debe ocurrir antes de `flowOn()` si querés que se ejecute en ese dispatcher.
+- **El bloque catch no se ejecuta**: El operador `catch()` solo captura excepciones desde upstream (antes de él). Si una excepción ocurre durante la colección (downstream), no será capturada. Además, `catch()` debe emitir un valor o relanzar para continuar el flow.
+- **Múltiples llamadas a LoadLaunches**: Si `loadLaunches()` se llama múltiples veces rápidamente, podrías querer cancelar colecciones previas. Considerá usar `Flow.collect()` en una sola coroutine o usar `shareIn()`/`stateIn()` para compartir el flow.
+- **Dependencias mock no funcionan**: Asegurate de haber agregado una biblioteca de mocking como MockK a tus dependencias de test. Para KMP, podrías necesitar agregarla al source set `commonTest`: `implementation("io.mockk:mockk:1.13.8")` o usar mocks manuales.
+- **Dispatcher.Default vs Dispatcher.IO**: Usá `Dispatchers.Default` para trabajo intensivo de CPU y `Dispatchers.IO` para operaciones de I/O. En el repository, usamos Default para la operación de caché ya que es una escritura local rápida, mientras que la llamada de red en el data source usa IO.
+- **Función copy() no disponible en data class**: Asegurate de que tu clase UiState esté declarada como `data class`, no una `class` regular. La función `copy()` se genera automáticamente para data classes.
 
 </details>
