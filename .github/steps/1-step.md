@@ -95,14 +95,14 @@ En este paso, configurarás Koin con una estructura modular:
 1. Crea marcadores de posición para los módulos de Koin en tu proyecto.
 
   ```kotlin
-  // shared/src/commonMain/kotlin/di/modules/DataModule.kt
+  // shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/DataModule.kt
   val dataModule = module {
       // Define aquí las dependencias de tu capa de datos
   }
   ```
 
   ```kotlin
-  // shared/src/commonMain/kotlin/di/modules/DomainModule.kt
+  // shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/DomainModule.kt
   val domainModule = module {
       // Define aquí las dependencias de tu capa de dominio
   }
@@ -110,14 +110,14 @@ En este paso, configurarás Koin con una estructura modular:
 
   ```kotlin
 
-  // shared/src/commonMain/kotlin/di/modules/PresentationModule.kt
+  // shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/PresentationModule.kt
   val presentationModule = module {
       // Define aquí las dependencias de tu capa de presentación
   }
   ```
 
   ```kotlin
-  // shared/src/commonMain/kotlin/di/modules/NetworkModule.kt
+  // shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/NetworkModule.kt
   val networkModule = module {
       // Define aquí tus dependencias relacionadas con red
   }
@@ -125,19 +125,19 @@ En este paso, configurarás Koin con una estructura modular:
 
 1. El caso especial es el módulo de plataforma, que será extendido por cada plataforma para incluir dependencias específicas.
   ```kotlin
-  // shared/src/commonMain/kotlin/di/modules/PlatformModule.kt
+  // shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/PlatformModule.kt
   expect fun platformModule(): Module
   ```
 
   ```kotlin
-  // shared/src/androidMain/kotlin/di/modules/PlatformModule.android.kt
+  // shared/src/androidMain/kotlin/compose/project/demo/composedemo/di/modules/PlatformModule.android.kt
   actual fun platformModule(): Module = module {
       // Define aquí tus dependencias específicas de Android
   }
   ```
 
   ```kotlin
-  // shared/src/iosMain/kotlin/di/modules/PlatformModule.ios.kt
+  // shared/src/iosMain/kotlin/compose/project/demo/composedemo/di/modules/PlatformModule.ios.kt
   actual fun platformModule(): Module = module {
       // Define aquí tus dependencias específicas de iOS
   }
@@ -146,7 +146,7 @@ En este paso, configurarás Koin con una estructura modular:
 1. Crea un Módulo Compartido para incluir todos los módulos de Koin.
 
   ```kotlin
-  // shared/src/commonMain/kotlin/di/modules/SharedModule.kt
+  // shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/SharedModule.kt
   val sharedModule = module {
       // Define aquí las dependencias compartidas
       // caso especial para dependencias específicas de plataforma llamándolo como función
@@ -157,7 +157,7 @@ En este paso, configurarás Koin con una estructura modular:
 1. Crea una función auxiliar para inicializar Koin en tu aplicación.
 
   ```kotlin
-  // shared/src/commonMain/kotlin/di/KoinHelper.kt
+  // shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/KoinHelper.kt
   fun initKoin(config: KoinAppDeclaration? = null): KoinApplication {
       return startKoin {
           includes(config)  // Extensiones específicas de plataforma
