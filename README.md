@@ -13,7 +13,7 @@ _Construye una aplicación multiplataforma para rastrear lanzamientos de SpaceX 
   - Conceptos básicos de programación asíncrona (Coroutines)
   - Una cuenta de GitHub
 
-- **Duración**: Este ejercicio toma aproximadamente 2-3 horas para completarse.
+- **Duración**: Este ejercicio toma aproximadamente 1-2 horas para completarse.
 
 En este ejercicio, aprenderás a:
 
