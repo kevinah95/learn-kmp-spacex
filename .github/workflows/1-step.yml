@@ -65,56 +65,56 @@ jobs:
         continue-on-error: true
         uses: skills/exercise-toolkit/actions/file-exists@v0.8.1
         with:
-          file: composeApp/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/DataModule.kt
+          file: shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/DataModule.kt
 
       - name: Check if DomainModule exists
         id: check-domain-module
         continue-on-error: true
         uses: skills/exercise-toolkit/actions/file-exists@v0.8.1
         with:
-          file: composeApp/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/DomainModule.kt
+          file: shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/DomainModule.kt
 
       - name: Check if PresentationModule exists
         id: check-presentation-module
         continue-on-error: true
         uses: skills/exercise-toolkit/actions/file-exists@v0.8.1
         with:
-          file: composeApp/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/PresentationModule.kt
+          file: shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/PresentationModule.kt
 
       - name: Check if NetworkModule exists
         id: check-network-module
         continue-on-error: true
         uses: skills/exercise-toolkit/actions/file-exists@v0.8.1
         with:
-          file: composeApp/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/NetworkModule.kt
+          file: shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/NetworkModule.kt
 
       - name: Check if PlatformModule expect exists
         id: check-platform-module-common
         continue-on-error: true
         uses: skills/exercise-toolkit/actions/file-exists@v0.8.1
         with:
-          file: composeApp/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/PlatformModule.kt
+          file: shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/PlatformModule.kt
 
       - name: Check if PlatformModule Android actual exists
         id: check-platform-module-android
         continue-on-error: true
         uses: skills/exercise-toolkit/actions/file-exists@v0.8.1
         with:
-          file: composeApp/src/androidMain/kotlin/compose/project/demo/composedemo/di/modules/PlatformModule.android.kt
+          file: shared/src/androidMain/kotlin/compose/project/demo/composedemo/di/modules/PlatformModule.android.kt
 
       - name: Check if SharedModule exists
         id: check-shared-module
         continue-on-error: true
         uses: skills/exercise-toolkit/actions/file-exists@v0.8.1
         with:
-          file: composeApp/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/SharedModule.kt
+          file: shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/SharedModule.kt
 
       - name: Check if KoinHelper exists
         id: check-koin-helper
         continue-on-error: true
         uses: skills/exercise-toolkit/actions/file-exists@v0.8.1
         with:
-          file: composeApp/src/commonMain/kotlin/compose/project/demo/composedemo/di/KoinHelper.kt
+          file: shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/KoinHelper.kt
 
       - name: Update comment - step results
         uses: GrantBirki/comment@v2.1.1
