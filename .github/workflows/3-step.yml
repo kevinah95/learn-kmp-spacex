@@ -67,42 +67,42 @@ jobs:
         continue-on-error: true
         uses: skills/exercise-toolkit/actions/file-exists@v0.8.1
         with:
-          file: composeApp/src/commonMain/sqldelight/compose/project/demo/composedemo/data/local/AppDatabase.sq
+          file: shared/src/commonMain/sqldelight/compose/project/demo/composedemo/data/local/AppDatabase.sq
 
       - name: Check if DriverFactory expect exists
         id: check-driver-factory-common
         continue-on-error: true
         uses: skills/exercise-toolkit/actions/file-exists@v0.8.1
         with:
-          file: composeApp/src/commonMain/kotlin/compose/project/demo/composedemo/data/local/DriverFactory.kt
+          file: shared/src/commonMain/kotlin/compose/project/demo/composedemo/data/local/DriverFactory.kt
 
       - name: Check if DriverFactory Android actual exists
         id: check-driver-factory-android
         continue-on-error: true
         uses: skills/exercise-toolkit/actions/file-exists@v0.8.1
         with:
-          file: composeApp/src/androidMain/kotlin/compose/project/demo/composedemo/data/local/DriverFactory.android.kt
+          file: shared/src/androidMain/kotlin/compose/project/demo/composedemo/data/local/DriverFactory.android.kt
 
       - name: Check if DriverFactory iOS actual exists
         id: check-driver-factory-ios
         continue-on-error: true
         uses: skills/exercise-toolkit/actions/file-exists@v0.8.1
         with:
-          file: composeApp/src/iosMain/kotlin/compose/project/demo/composedemo/data/local/DriverFactory.ios.kt
+          file: shared/src/iosMain/kotlin/compose/project/demo/composedemo/data/local/DriverFactory.ios.kt
 
       - name: Check if ILocalRocketLaunchesDataSource exists
         id: check-local-interface
         continue-on-error: true
         uses: skills/exercise-toolkit/actions/file-exists@v0.8.1
         with:
-          file: composeApp/src/commonMain/kotlin/compose/project/demo/composedemo/data/local/ILocalRocketLaunchesDataSource.kt
+          file: shared/src/commonMain/kotlin/compose/project/demo/composedemo/data/local/ILocalRocketLaunchesDataSource.kt
 
       - name: Check if LocalRocketLaunchesDataSource exists
         id: check-local-datasource
         continue-on-error: true
         uses: skills/exercise-toolkit/actions/file-exists@v0.8.1
         with:
-          file: composeApp/src/commonMain/kotlin/compose/project/demo/composedemo/data/local/LocalRocketLaunchesDataSource.kt
+          file: shared/src/commonMain/kotlin/compose/project/demo/composedemo/data/local/LocalRocketLaunchesDataSource.kt
 
       - name: Update comment - step results
         uses: GrantBirki/comment@v2.1.1
