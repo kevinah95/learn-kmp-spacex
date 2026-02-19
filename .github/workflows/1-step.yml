@@ -8,6 +8,15 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/DataModule.kt"
+      - "shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/DomainModule.kt"
+      - "shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/PresentationModule.kt"
+      - "shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/NetworkModule.kt"
+      - "shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/PlatformModule.kt"
+      - "shared/src/androidMain/kotlin/compose/project/demo/composedemo/di/modules/PlatformModule.android.kt"
+      - "shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/SharedModule.kt"
+      - "shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/KoinHelper.kt"
 
 permissions:
   contents: write

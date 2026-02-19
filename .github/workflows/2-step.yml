@@ -8,6 +8,11 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "shared/src/commonMain/kotlin/compose/project/demo/composedemo/di/modules/NetworkModule.kt"
+      - "shared/src/commonMain/kotlin/compose/project/demo/composedemo/domain/entity/Entity.kt"
+      - "shared/src/commonMain/kotlin/compose/project/demo/composedemo/data/remote/IRemoteRocketLaunchesDataSource.kt"
+      - "shared/src/commonMain/kotlin/compose/project/demo/composedemo/data/remote/RemoteRocketLaunchesDataSource.kt"
 
 permissions:
   contents: write

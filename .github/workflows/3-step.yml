@@ -8,6 +8,13 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "shared/src/commonMain/sqldelight/compose/project/demo/composedemo/data/local/AppDatabase.sq"
+      - "shared/src/commonMain/kotlin/compose/project/demo/composedemo/data/local/DriverFactory.kt"
+      - "shared/src/androidMain/kotlin/compose/project/demo/composedemo/data/local/DriverFactory.android.kt"
+      - "shared/src/iosMain/kotlin/compose/project/demo/composedemo/data/local/DriverFactory.ios.kt"
+      - "shared/src/commonMain/kotlin/compose/project/demo/composedemo/data/local/ILocalRocketLaunchesDataSource.kt"
+      - "shared/src/commonMain/kotlin/compose/project/demo/composedemo/data/local/LocalRocketLaunchesDataSource.kt"
 
 permissions:
   contents: write
