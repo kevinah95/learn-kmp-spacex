@@ -131,7 +131,6 @@ En este paso, vas a:
   +    viewModel { RocketLaunchViewModel(get()) }
   }
   ```
-
 1. Creá un test para el Repository para verificar su comportamiento.
 
   ```kotlin
@@ -207,7 +206,6 @@ En este paso, vas a:
     }
   }
   ```
-
 1. Ejecutá tus tests para asegurar que todo funciona como se espera.
 
 <details>
