@@ -50,28 +50,27 @@ En este paso, vas a:
    ```kotlin
    // shared/src/commonMain/kotlin/compose/project/demo/composedemo/data/repository/RocketLaunchesRepository.kt
    class RocketLaunchesRepository(
-      private val localRocketLaunchesDataSource: ILocalRocketLaunchesDataSource,
-      private val remoteRocketLaunchesDataSource: IRemoteRocketLaunchesDataSource,
-      private val defaultDispatcher: CoroutineDispatcher,
-  ) : IRocketLaunchesRepository {
-
-    override val latestLaunches: Flow<List<RocketLaunch>> =
-        remoteRocketLaunchesDataSource
-            .latestLaunches()
-            .onEach { launches -> // Executes on the default dispatcher
-              localRocketLaunchesDataSource.clearAndCreateLaunches(launches)
-            }
-            // flowOn affects the upstream flow ↑
-            .flowOn(defaultDispatcher)
-            // the downstream flow ↓ is not affected
-            // If an error happens, emit the last cached values
-            .catch { exception -> // Executes in the consumer's context
-              val cachedLaunches = localRocketLaunchesDataSource.getAllLaunches()
-              if (cachedLaunches.isNotEmpty()) {
-                emit(cachedLaunches)
+        private val localRocketLaunchesDataSource: ILocalRocketLaunchesDataSource,
+        private val remoteRocketLaunchesDataSource: IRemoteRocketLaunchesDataSource,
+        private val defaultDispatcher: CoroutineDispatcher,
+    ) : IRocketLaunchesRepository {
+      override val latestLaunches: Flow<List<RocketLaunch>> =
+          remoteRocketLaunchesDataSource
+              .latestLaunches()
+              .onEach { launches -> // Executes on the default dispatcher
+                localRocketLaunchesDataSource.clearAndCreateLaunches(launches)
               }
-            }
-  }
+              // flowOn affects the upstream flow ↑
+              .flowOn(defaultDispatcher)
+              // the downstream flow ↓ is not affected
+              // If an error happens, emit the last cached values
+              .catch { exception -> // Executes in the consumer's context
+                val cachedLaunches = localRocketLaunchesDataSource.getAllLaunches()
+                if (cachedLaunches.isNotEmpty()) {
+                  emit(cachedLaunches)
+                }
+              }
+    }
    ``` 
 
 1. Actualizá tu Data Module para incluir el Repository y sus dependencias.
@@ -89,9 +88,9 @@ En este paso, vas a:
    ```kotlin
    // shared/src/commonMain/kotlin/compose/project/demo/composedemo/presentation/rocketLaunch/RocketLaunchUiState.kt
    data class RocketLaunchUiState(
-      val isLoading: Boolean = false,
-      val launches: List<RocketLaunch> = emptyList(),
-  )
+        val isLoading: Boolean = false,
+        val launches: List<RocketLaunch> = emptyList(),
+    )
    ```
 
 1. Creá un ViewModel para gestionar el estado de UI e interactuar con el Repository.
@@ -100,27 +99,28 @@ En este paso, vas a:
    // shared/src/commonMain/kotlin/compose/project/demo/composedemo/presentation/rocketLaunch/RocketLaunchViewModel.kt
    class RocketLaunchViewModel(private val rocketLaunchesRepository: IRocketLaunchesRepository) :
       ViewModel() {
-    private val _uiState = MutableStateFlow(RocketLaunchUiState())
-    val uiState: StateFlow<RocketLaunchUiState> = _uiState.asStateFlow()
+      private val _uiState = MutableStateFlow(RocketLaunchUiState())
+      val uiState: StateFlow<RocketLaunchUiState> = _uiState.asStateFlow()
 
-    init {
-      loadLaunches()
-    }
+      init {
+        loadLaunches()
+      }
 
-    fun loadLaunches() {
-      viewModelScope.launch {
-        _uiState.value = _uiState.value.copy(isLoading = true, launches = emptyList())
-        try {
-          rocketLaunchesRepository.latestLaunches.collect { launches ->
-            _uiState.value = _uiState.value.copy(isLoading = false, launches = launches)
+      fun loadLaunches() {
+        viewModelScope.launch {
+          _uiState.value = _uiState.value.copy(isLoading = true, launches = emptyList())
+          try {
+            rocketLaunchesRepository.latestLaunches.collect { launches ->
+              _uiState.value = _uiState.value.copy(isLoading = false, launches = launches)
+            }
+          } catch (e: Exception) {
+            _uiState.value = _uiState.value.copy(isLoading = false, launches = emptyList())
           }
-        } catch (e: Exception) {
-          _uiState.value = _uiState.value.copy(isLoading = false, launches = emptyList())
         }
       }
     }
-  }
-  ```
+
+   ```
 
 1. Actualizá tu Presentation Module para incluir el ViewModel y sus dependencias.
 
